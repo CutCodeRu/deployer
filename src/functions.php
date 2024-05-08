@@ -370,6 +370,8 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
         $command = parse($command);
         $workingPath = get('working_path', '');
 
+        $command = "echo '_cmd_' && $command";
+
         if (!empty($workingPath)) {
             $command = "cd $workingPath && ($command)";
         }

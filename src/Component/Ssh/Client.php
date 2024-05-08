@@ -87,7 +87,7 @@ class Client
 
         $callback = function ($type, $buffer) use ($config, $host) {
             $this->logger->printBuffer($host, $type, $buffer);
-            $this->pop->callback($host, boolval($config['real_time_output']))($type, $buffer);
+            $this->pop->callback($host, (bool) $config['real_time_output'])($type, $buffer);
         };
 
         try {
@@ -104,6 +104,13 @@ class Client
         }
 
         $output = $this->pop->filterOutput($process->getOutput());
+
+        if(str_contains($output, '_cmd_')) {
+            $output = substr($output, strpos($output, '_cmd_'));
+            $output = str_replace('_cmd_', '', $output);
+            $output = trim($output);
+        }
+
         $exitCode = $this->parseExitStatus($process);
 
         if ($exitCode !== 0 && !$config['no_throw']) {
