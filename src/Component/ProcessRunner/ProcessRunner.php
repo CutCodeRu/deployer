@@ -47,6 +47,11 @@ class ProcessRunner
             'real_time_output' => false,
             'shell' => 'bash -s',
         ];
+
+        if(is_string($defaults['timeout'])) {
+            $defaults['timeout'] = 300;
+        }
+
         $config = array_merge($defaults, $config);
 
         $this->pop->command($host, 'run', $command);
